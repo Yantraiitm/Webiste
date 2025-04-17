@@ -34,14 +34,14 @@ export default function EventCard({ event, index, featured = false }: EventCardP
       {featured && event.image && (
         <div className="relative h-48">
           <Image src={event.image || "/placeholder.svg"} alt={event.title} fill className="object-cover" />
-          <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+          <div className="absolute top-2 right-2 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white text-xs font-bold px-2 py-1 rounded">
             {event.category}
           </div>
         </div>
       )}
       <div className={featured ? "p-6" : ""}>
-        <div className="text-orange-500 font-bold mb-2 flex items-center gap-2">
-          <Calendar size={16} />
+        <div className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] bg-clip-text text-transparent font-bold mb-2 flex items-center gap-2">
+          <Calendar size={16} className="text-[#883FE0]" />
           {event.date}
         </div>
         <h3 className="text-xl font-bold mb-2">{event.title}</h3>
@@ -58,7 +58,7 @@ export default function EventCard({ event, index, featured = false }: EventCardP
         <p className="text-gray-400 mb-4">{event.description}</p>
         <Link href={`/events/${event.id}`}>
           {featured ? (
-            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">Register Now</Button>
+            <Button className="w-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">Register Now</Button>
           ) : (
             <Button variant="link" className="text-blue-400 p-0 hover:text-blue-300">
               Register Now →

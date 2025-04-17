@@ -194,7 +194,7 @@ export default function InstructorDashboard() {
             <TabsContent value="courses" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">My Courses</h2>
-                <Button className="bg-blue-500 hover:bg-blue-600">
+                <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">
                   <PlusCircle size={16} className="mr-2" />
                   Create New Course
                 </Button>

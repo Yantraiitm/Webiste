@@ -61,7 +61,7 @@ export default function AdminSidebar() {
               <Link
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors ${
-                  item.href === "/admin" ? "bg-orange-500 text-white hover:bg-orange-600" : "text-gray-300"
+                  item.href === "/admin" ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]" : "text-gray-300"
                 }`}
               >
                 <item.icon size={20} />

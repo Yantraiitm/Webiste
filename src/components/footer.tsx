@@ -13,34 +13,34 @@ export default function Footer() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 mb-8 text-center">
-            <Link href="/login" className="hover:text-orange-500 transition-colors">
-              LOGIN
+            <Link href="/login" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
+              Login
             </Link>
-            <Link href="/about" className="hover:text-orange-500 transition-colors">
-              ABOUT US
+            <Link href="/about" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
+              About
             </Link>
-            <Link href="/team" className="hover:text-orange-500 transition-colors">
-              TEAM
+            <Link href="/team" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
+              Team
             </Link>
-            <Link href="/projects" className="hover:text-orange-500 transition-colors">
-              PROJECTS
+            <Link href="/projects" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
+              Projects
             </Link>
           </div>
 
           <div className="flex gap-6 mb-8">
-            <Link href="https://facebook.com" className="hover:text-blue-500 transition-colors">
+            <Link href="https://facebook.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
               <Facebook size={24} />
               <span className="sr-only">Facebook</span>
             </Link>
-            <Link href="https://twitter.com" className="hover:text-blue-400 transition-colors">
+            <Link href="https://twitter.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
               <Twitter size={24} />
               <span className="sr-only">Twitter</span>
             </Link>
-            <Link href="https://instagram.com" className="hover:text-pink-500 transition-colors">
+            <Link href="https://instagram.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
               <Instagram size={24} />
               <span className="sr-only">Instagram</span>
             </Link>
-            <Link href="https://linkedin.com" className="hover:text-blue-600 transition-colors">
+            <Link href="https://linkedin.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
               <Linkedin size={24} />
               <span className="sr-only">LinkedIn</span>
             </Link>

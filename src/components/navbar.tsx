@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 const navLinks = [
   { name: "HOME", path: "/" },
@@ -20,6 +21,7 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,10 +57,10 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.path}
-                className={`text-sm font-medium transition-colors hover:text-orange-500 ${
-                  link.name === "HOME"
-                    ? "bg-orange-500 text-white px-4 py-2 rounded-md hover:text-white hover:bg-orange-600"
-                    : ""
+                className={`text-sm font-medium transition-colors ${
+                  pathname === link.path
+                    ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white px-4 py-2 rounded-md hover:text-white hover:from-[#7F35CF] hover:to-[#F87878]"
+                    : "hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent"
                 }`}
               >
                 {link.name}
@@ -97,7 +99,11 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.path}
-                    className="text-sm font-medium py-2 hover:text-orange-500"
+                    className={`text-sm font-medium ${
+                      pathname === link.path
+                        ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white px-4 py-2 rounded-md"
+                        : "py-2 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent"
+                    }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}

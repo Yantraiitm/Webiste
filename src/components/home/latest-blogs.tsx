@@ -59,7 +59,7 @@ export default function LatestBlogs() {
           <Link href="/blogs">
             <Button
               variant="outline"
-              className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-8"
+              className="border-[#883FE0] bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] bg-clip-text text-transparent hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:text-white px-8"
             >
               Read All Articles
             </Button>

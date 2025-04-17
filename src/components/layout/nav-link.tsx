@@ -15,10 +15,10 @@ export default function NavLink({ href, name }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`text-sm font-medium transition-colors hover:text-orange-500 ${
-        name === "HOME" || isActive
-          ? "bg-orange-500 text-white px-4 py-2 rounded-md hover:text-white hover:bg-orange-600"
-          : ""
+      className={`text-sm font-medium transition-colors ${
+        isActive
+          ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white px-4 py-2 rounded-md hover:opacity-90"
+          : "text-gray-400 hover:bg-gradient-to-r hover:from-[#883FE0]  hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent"
       }`}
     >
       {name}

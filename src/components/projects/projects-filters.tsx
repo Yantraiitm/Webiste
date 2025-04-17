@@ -15,7 +15,7 @@ export default function ProjectsFilters({ categories, selectedCategory, setSelec
         <motion.button
           key={category}
           className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-            selectedCategory === category ? "bg-orange-500 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+            selectedCategory === category ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
           }`}
           onClick={() => setSelectedCategory(category)}
           whileHover={{ scale: 1.05 }}

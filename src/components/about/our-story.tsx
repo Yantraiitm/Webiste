@@ -15,18 +15,15 @@ export default function OurStory() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-6">Our Story</h2>
+            <h2 className="text-3xl font-bold mb-6">Our Journey</h2>
             <p className="text-gray-300 mb-4">
-              Founded in 2018, Yantra began as a small group of passionate engineering students with a shared vision: to
-              explore the frontiers of robotics and artificial intelligence.
+              Yantra was founded in September 2024 by a small group of passionate individuals with a clear vision for innovation and exploration in robotics, driven by cutting-edge technology. At the time, we were part of the Saranda House clubs, where we began our journey with a shared curiosity and commitment to building something impactful.
             </p>
             <p className="text-gray-300 mb-4">
-              What started as informal meetups in a university lab has grown into one of the most innovative robotics
-              clubs, with members from diverse backgrounds and expertise.
+              The overwhelming response and enthusiasm from students quickly transformed our initiative into a growing community of robotics enthusiasts. Recognizing the momentum, we evolved into an autonomous society in January 2025. Since then, Yantra has actively reached out to institutions like the IITs and collaborated with industries to push the boundaries of robotics.
             </p>
             <p className="text-gray-300">
-              Today, Yantra stands at the intersection of cutting-edge research and practical applications, creating
-              solutions that address real-world challenges through the power of robotics.
+              Our journey has been marked by groundbreaking ideas, innovative projects, and a relentless pursuit of excellence. And this is just the beginning.
             </p>
           </motion.div>
           <motion.div

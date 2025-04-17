@@ -10,11 +10,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Check, Zap, Users } from "lucide-react"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     // Simulate API call
@@ -23,7 +24,7 @@ export default function LoginPage() {
     }, 2000)
   }
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     // Simulate API call
@@ -69,7 +70,7 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password">Password</Label>
-                      <Link href="/forgot-password" className="text-xs text-orange-500 hover:text-orange-400">
+                      <Link href="/forgot-password" className="text-xs bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] bg-clip-text text-transparent hover:from-[#7F35CF] hover:to-[#F87878]">
                         Forgot password?
                       </Link>
                     </div>
@@ -83,7 +84,7 @@ export default function LoginPage() {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                    className="w-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]"
                     disabled={isLoading}
                   >
                     {isLoading ? "Signing in..." : "Sign In"}
@@ -135,7 +136,7 @@ export default function LoginPage() {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                    className="w-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]"
                     disabled={isLoading}
                   >
                     {isLoading ? "Creating account..." : "Create Account"}
@@ -146,11 +147,11 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center text-sm text-gray-500">
               By continuing, you agree to our{" "}
-              <Link href="/terms" className="text-orange-500 hover:text-orange-400">
+              <Link href="/terms" className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] bg-clip-text text-transparent hover:from-[#7F35CF] hover:to-[#F87878]">
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="/privacy" className="text-orange-500 hover:text-orange-400">
+              <Link href="/privacy" className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] bg-clip-text text-transparent hover:from-[#7F35CF] hover:to-[#F87878]">
                 Privacy Policy
               </Link>
               .
@@ -172,20 +173,20 @@ export default function LoginPage() {
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold">1</span>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] flex items-center justify-center">
+                      <Check className="h-4 w-4 text-white" />
                     </div>
                     <p className="text-white">Access to premium robotics courses</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold">2</span>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] flex items-center justify-center">
+                      <Zap className="h-4 w-4 text-white" />
                     </div>
                     <p className="text-white">Join exclusive workshops and events</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold">3</span>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] flex items-center justify-center">
+                      <Users className="h-4 w-4 text-white" />
                     </div>
                     <p className="text-white">Connect with like-minded innovators</p>
                   </div>

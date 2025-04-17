@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 export default function JoinCTA() {
   return (
-    <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-400 text-white relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
@@ -33,7 +33,7 @@ export default function JoinCTA() {
             viewport={{ once: true }}
           >
             <Link href="/join">
-              <Button className="bg-white text-orange-600 hover:bg-gray-100 hover:text-orange-700 px-8 py-6 text-lg font-bold">
+              <Button className="bg-white hover:bg-gray-100 hover:from-[#7F35CF] hover:to-[#F87878] hover:text-white bg-gradient-to-r from-white to-white bg-clip-text text-transparent px-8 py-6 text-lg font-bold">
                 Join Yantra Today
               </Button>
             </Link>

@@ -117,7 +117,7 @@ export default function AdminDashboard() {
                             <h3 className="text-3xl font-bold mt-1">{stat.value}</h3>
                             <p className="text-xs text-green-500 mt-1">{stat.change} this month</p>
                           </div>
-                          <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center text-orange-500">
+                          <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white">
                             <stat.icon size={24} />
                           </div>
                         </div>
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
             <TabsContent value="courses" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Manage Courses</h2>
-                <Button className="bg-orange-500 hover:bg-orange-600">
+                <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">
                   <PlusCircle size={16} className="mr-2" />
                   Add New Course
                 </Button>
@@ -221,7 +221,7 @@ export default function AdminDashboard() {
             <TabsContent value="blogs" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Manage Blog Posts</h2>
-                <Button className="bg-orange-500 hover:bg-orange-600">
+                <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">
                   <PlusCircle size={16} className="mr-2" />
                   Create New Post
                 </Button>
@@ -273,7 +273,7 @@ export default function AdminDashboard() {
             <TabsContent value="events" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Manage Events</h2>
-                <Button className="bg-orange-500 hover:bg-orange-600">
+                <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">
                   <PlusCircle size={16} className="mr-2" />
                   Create New Event
                 </Button>
@@ -335,9 +335,8 @@ export default function AdminDashboard() {
             <TabsContent value="users" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Manage Users</h2>
-                <Button className="bg-orange-500 hover:bg-orange-600">
-                  <PlusCircle size={16} className="mr-2" />
-                  Add New User
+                <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">
+                  View All Users
                 </Button>
               </div>
 

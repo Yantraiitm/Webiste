@@ -47,7 +47,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/images/LOGO.png" alt="Yantra Logo" width={40} height={40} className="w-auto h-10" />
-            <span className="font-bold text-xl hidden sm:inline-block">YANTRA</span>
+            <span className="font-bold text-xl hidden sm:inline-block text-gray-400">YANTRA</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -59,7 +59,7 @@ export default function Navbar() {
 
           <div className="hidden md:block">
             <Link href="/login">
-              <Button variant="outline" className="border-white hover:bg-white hover:text-black">
+              <Button variant="outline" className="border-gray-400 text-gray-400 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:text-white transition-colors duration-300">
                 Log In
               </Button>
             </Link>
@@ -88,7 +88,7 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.path}
-                    className="text-sm font-medium py-2 hover:text-orange-500"
+                    className="text-sm font-medium py-2 text-gray-400 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}

@@ -61,7 +61,7 @@ export default function UpcomingEvents() {
           viewport={{ once: true }}
         >
           <Link href="/events">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8">View All Events</Button>
+            <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878] px-8">View All Events</Button>
           </Link>
         </motion.div>
       </div>

@@ -19,7 +19,7 @@ export default function SectionHeading({ title, description }: SectionHeadingPro
       <h2 className="text-4xl font-bold mb-4 relative inline-block">
         {title}
         <motion.div
-          className="absolute -bottom-2 left-0 h-1 bg-orange-500"
+          className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B]"
           initial={{ width: 0 }}
           whileInView={{ width: "100%" }}
           transition={{ delay: 0.2, duration: 0.8 }}

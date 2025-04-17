@@ -2,54 +2,77 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import SectionHeading from "@/components/ui/section-heading"
-import ProjectCard from "@/components/projects/project-card"
+import { getFeaturedCourses, Course } from "@/data/courses"
 
-// Sample featured projects data
-const featuredProjects = [
-  {
-    id: 1,
-    title: "Autonomous Drone",
-    description: "A drone that can navigate and perform tasks without human intervention using computer vision and AI.",
-    image: "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Robotics",
-    status: "In Progress",
-  },
-  {
-    id: 2,
-    title: "Smart Agriculture Robot",
-    description: "An agricultural robot that can monitor crop health, soil conditions, and automate irrigation.",
-    image: "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Agriculture",
-    status: "Completed",
-  },
-  {
-    id: 3,
-    title: "Medical Assistant Robot",
-    description: "A robot designed to assist healthcare professionals in routine tasks and patient monitoring.",
-    image: "https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Healthcare",
-    status: "Prototype",
-  },
-]
+// Course card component
+const CourseCard = ({ course, index }: { course: Course; index: number }) => {
+  return (
+    <motion.div
+      className="bg-gray-900/60 rounded-xl overflow-hidden backdrop-blur-sm border border-gray-800 hover:border-[#883FE0]/50 transition duration-500 h-full flex flex-col"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
+        transition: { duration: 0.3 },
+      }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true }}
+    >
+      <div className="relative h-48 w-full">
+        <Image
+          src={course.image || "/images/ROBOTBG1.png"}
+          alt={course.title}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute top-2 right-2 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white text-xs px-2 py-1 rounded-full">
+          {course.level}
+        </div>
+        <div className="absolute top-2 left-2 bg-gray-900 text-white text-xs px-2 py-1 rounded-full">
+          {course.category}
+        </div>
+      </div>
+      
+      <div className="p-6 flex-grow flex flex-col">
+        <h3 className="text-xl font-bold text-white mb-2">{course.title}</h3>
+        <p className="text-sm text-gray-400 mb-2">Instructor: {course.instructor}</p>
+        <p className="text-sm text-gray-300 mb-4 flex-grow">{course.description}</p>
+        
+        <div className="mt-auto">
+          <Link href={`/courses/${course.id}`} className="text-transparent bg-clip-text bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] hover:from-[#7F35CF] hover:to-[#F87878] text-sm flex items-center">
+            View course details
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function FeaturedProjects() {
+  const featuredCourses = getFeaturedCourses();
+  
   return (
-    <section className="py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-b from-black to-black-900 relative overflow-hidden">
       {/* Background decorative elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#883FE0]/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FA8B8B]/5 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto px-4">
         <SectionHeading
-          title="Featured Projects"
-          description="Explore our innovative robotics projects that push the boundaries of technology and imagination."
+          title="Featured Courses"
+          description="Explore our cutting-edge robotics courses taught by industry experts and academic mentors."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+          {featuredCourses.map((course, index) => (
+            <CourseCard key={course.id} course={course} index={index} />
           ))}
         </div>
 
@@ -60,12 +83,12 @@ export default function FeaturedProjects() {
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <Link href="/projects">
+          <Link href="/courses">
             <Button
               variant="outline"
-              className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-8"
+              className="border-transparent bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878] px-8"
             >
-              View All Projects
+              View All Courses
             </Button>
           </Link>
         </motion.div>
@@ -73,4 +96,3 @@ export default function FeaturedProjects() {
     </section>
   )
 }
-

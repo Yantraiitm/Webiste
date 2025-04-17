@@ -36,13 +36,13 @@ export default function EventListItem({ event, index }: EventListItemProps) {
         <div className="p-6 md:w-3/4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
             <div>
-              <span className="inline-block bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded mb-2 md:mb-0">
+              <span className="inline-block bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white text-xs font-bold px-2 py-1 rounded mb-2 md:mb-0">
                 {event.category}
               </span>
               <h3 className="text-xl font-bold">{event.title}</h3>
             </div>
             <div className="flex items-center mt-2 md:mt-0">
-              <Calendar size={16} className="mr-2 text-orange-500" />
+              <Calendar size={16} className="mr-2 text-[#883FE0]" />
               <span className="text-sm text-gray-300">{event.date}</span>
             </div>
           </div>
@@ -59,7 +59,7 @@ export default function EventListItem({ event, index }: EventListItemProps) {
               </div>
             </div>
             <Link href={`/events/${event.id}`}>
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white">Register Now</Button>
+              <Button className="bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878]">Register Now</Button>
             </Link>
           </div>
         </div>
