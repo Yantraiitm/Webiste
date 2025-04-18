@@ -100,7 +100,7 @@ export default function BlogsPage() {
   })
 
   return (
-    <div className="pt-20">
+    <div >
       {/* Hero Section */}
       <section className="py-16 relative">
           <div className="absolute inset-0 z-0 opacity-60">

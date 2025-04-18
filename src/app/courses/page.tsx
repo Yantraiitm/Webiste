@@ -7,117 +7,11 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Search, Star, Clock, Users, BookOpen } from "lucide-react"
 
-// Sample courses data
-const courses = [
-  {
-    id: 1,
-    title: "Introduction to Robotics",
-    description: "Learn the fundamentals of robotics, from mechanics to programming.",
-    instructor: "Dr. Jane Smith",
-    duration: "8 weeks",
-    level: "Beginner",
-    students: 1245,
-    rating: 4.8,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "Fundamentals",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Advanced Robot Programming",
-    description: "Master advanced programming techniques for complex robotic systems.",
-    instructor: "Prof. John Doe",
-    duration: "10 weeks",
-    level: "Advanced",
-    students: 856,
-    rating: 4.7,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "Programming",
-    featured: true,
-  },
-  {
-    id: 3,
-    title: "Robot Sensor Integration",
-    description: "Learn how to integrate and calibrate various sensors for robotics applications.",
-    instructor: "Dr. Emily Chen",
-    duration: "6 weeks",
-    level: "Intermediate",
-    students: 932,
-    rating: 4.6,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "Hardware",
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Artificial Intelligence for Robotics",
-    description: "Implement AI algorithms to create intelligent robotic systems.",
-    instructor: "Michael Johnson",
-    duration: "12 weeks",
-    level: "Advanced",
-    students: 1102,
-    rating: 4.9,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "AI",
-    featured: true,
-  },
-  {
-    id: 5,
-    title: "Robot Design and Prototyping",
-    description: "Design and build your own robot from concept to working prototype.",
-    instructor: "Dr. Sarah Williams",
-    duration: "8 weeks",
-    level: "Intermediate",
-    students: 745,
-    rating: 4.5,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "Design",
-    featured: false,
-  },
-  {
-    id: 6,
-    title: "Drone Programming and Control",
-    description: "Learn to program and control autonomous drones for various applications.",
-    instructor: "Alex Thompson",
-    duration: "7 weeks",
-    level: "Intermediate",
-    students: 892,
-    rating: 4.7,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "Drones",
-    featured: false,
-  },
-  {
-    id: 7,
-    title: "ROS (Robot Operating System) Fundamentals",
-    description: "Master the Robot Operating System framework for robotics development.",
-    instructor: "Dr. Robert Lee",
-    duration: "9 weeks",
-    level: "Intermediate",
-    students: 1056,
-    rating: 4.8,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "Programming",
-    featured: false,
-  },
-  {
-    id: 8,
-    title: "Computer Vision for Robotics",
-    description: "Implement computer vision techniques for robot perception and navigation.",
-    instructor: "Prof. Lisa Wang",
-    duration: "10 weeks",
-    level: "Advanced",
-    students: 978,
-    rating: 4.9,
-    image: "/placeholder.svg?height=600&width=800",
-    category: "AI",
-    featured: false,
-  },
-]
+import { courses, Course } from "@/data/courses"
 
-// Categories for filtering
-const categories = ["All", "Fundamentals", "Programming", "Hardware", "AI", "Design", "Drones"]
-const levels = ["All Levels", "Beginner", "Intermediate", "Advanced"]
+// Categories for filtering - derived from course data
+const categories = ["All", ...Array.from(new Set(courses.map(course => course.category)))]
+const levels = ["All Levels", "beginner", "intermediate", "advanced"]
 
 export default function CoursesPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -137,7 +31,7 @@ export default function CoursesPage() {
   const featuredCourses = courses.filter((course) => course.featured)
 
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
       <section className="py-16 relative">
           <div className="absolute inset-0 z-0 opacity-60">
@@ -165,7 +59,7 @@ export default function CoursesPage() {
               <input
                 type="text"
                 placeholder="Search courses..."
-                className="w-full bg-black border border-gray-700 rounded-lg py-2 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full bg-black border border-gray-700 rounded-lg py-2 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -180,8 +74,8 @@ export default function CoursesPage() {
                     key={category}
                     className={`px-4 py-1 rounded-full text-xs font-medium transition-colors ${
                       selectedCategory === category
-                        ? "bg-orange-500 text-white"
-                        : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                        ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white"
+                        : "bg-gray-800 text-gray-300 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B]"
                     }`}
                     onClick={() => setSelectedCategory(category)}
                     whileHover={{ scale: 1.05 }}
@@ -198,7 +92,9 @@ export default function CoursesPage() {
                   <motion.button
                     key={level}
                     className={`px-4 py-1 rounded-full text-xs font-medium transition-colors ${
-                      selectedLevel === level ? "bg-blue-500 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                      selectedLevel === level 
+                        ? "bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white" 
+                        : "bg-gray-800 text-gray-300 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B]"
                     }`}
                     onClick={() => setSelectedLevel(level)}
                     whileHover={{ scale: 1.05 }}
@@ -237,45 +133,48 @@ export default function CoursesPage() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
               >
-                <div className="relative h-48">
-                  <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
-                  <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    {course.category}
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-1 text-yellow-500 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} fill={i < Math.floor(course.rating) ? "currentColor" : "none"} />
-                    ))}
-                    <span className="text-sm text-gray-400 ml-1">
-                      {course.rating} ({course.students})
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{course.title}</h3>
-                  <p className="text-gray-400 mb-4">{course.description}</p>
-                  <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-4">
-                    <div className="flex items-center gap-1">
-                      <Clock size={14} />
-                      <span>{course.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <BookOpen size={14} />
-                      <span>{course.level}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Users size={14} />
-                      <span>{course.students} students</span>
+                <Link href={`/courses/${course.id}`} className="block h-full">
+                  <div className="relative h-48">
+                    <Image 
+                      src={course.image || "/placeholder.svg"} 
+                      alt={course.title} 
+                      fill 
+                      className="object-cover" 
+                    />
+                    <div className="absolute top-2 right-2 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white text-xs font-bold px-2 py-1 rounded">
+                      {course.category}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-gray-700"></div>
-                    <span className="text-sm font-medium">{course.instructor}</span>
+                  <div className="p-6">
+                    <div className="flex items-center gap-1 text-yellow-500 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={14} fill={i < 4 ? "currentColor" : "none"} />
+                      ))}
+                      <span className="text-sm text-gray-400 ml-1">
+                        {course.sessions?.length || 0} sessions
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{course.title}</h3>
+                    <p className="text-gray-400 mb-4">{course.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-4">
+                      <div className="flex items-center gap-1">
+                        <Clock size={14} />
+                        <span>{course.sessions?.length || 0} sessions</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <BookOpen size={14} />
+                        <span>{course.level}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-gray-700"></div>
+                      <span className="text-sm font-medium">{course.instructor}</span>
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] hover:opacity-90 text-white">
+                      Enroll Now
+                    </Button>
                   </div>
-                  <Link href={`/courses/${course.id}`}>
-                    <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">Enroll Now</Button>
-                  </Link>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -307,41 +206,46 @@ export default function CoursesPage() {
                   viewport={{ once: true }}
                   whileHover={{ y: -5 }}
                 >
-                  <div className="relative h-40">
-                    <Image src={course.image || "/placeholder.svg"} alt={course.title} fill className="object-cover" />
-                    <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      {course.category}
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <div className="flex items-center gap-1 text-yellow-500 mb-1">
-                      <Star size={12} fill="currentColor" />
-                      <span className="text-xs text-gray-400">
-                        {course.rating} ({course.students})
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-bold mb-1">{course.title}</h3>
-                    <p className="text-gray-400 text-sm mb-2 line-clamp-2">{course.description}</p>
-                    <div className="flex flex-wrap gap-2 text-xs text-gray-400 mb-3">
-                      <div className="flex items-center gap-1">
-                        <Clock size={12} />
-                        <span>{course.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <BookOpen size={12} />
-                        <span>{course.level}</span>
+                  <Link href={`/courses/${course.id}`} className="block h-full">
+                    <div className="relative h-40">
+                      <Image 
+                        src={course.image || "/placeholder.svg"} 
+                        alt={course.title} 
+                        fill 
+                        className="object-cover" 
+                      />
+                      <div className="absolute top-2 right-2 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white text-xs font-bold px-2 py-1 rounded">
+                        {course.category}
                       </div>
                     </div>
-                    <Link href={`/courses/${course.id}`}>
+                    <div className="p-4">
+                      <div className="flex items-center gap-1 text-yellow-500 mb-1">
+                        <Star size={12} fill="currentColor" />
+                        <span className="text-xs text-gray-400">
+                          {course.sessions?.length || 0} sessions
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold mb-1">{course.title}</h3>
+                      <p className="text-gray-400 text-sm mb-2 line-clamp-2">{course.description}</p>
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-400 mb-3">
+                        <div className="flex items-center gap-1">
+                          <Clock size={12} />
+                          <span>{course.sessions?.length || 0} sessions</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <BookOpen size={12} />
+                          <span>{course.level}</span>
+                        </div>
+                      </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
+                        className="w-full border-purple-500 text-purple-500 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:text-white hover:border-transparent"
                       >
                         View Course
                       </Button>
-                    </Link>
-                  </div>
+                    </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>

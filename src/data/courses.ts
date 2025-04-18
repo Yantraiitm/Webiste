@@ -26,24 +26,24 @@ export const courses: Course[] = [
     level: "beginner",
     image: "/images/placeholder.jpg",
     sessions: [
-      { name: "Orientation Bot Building Orientation" },
-      { name: "Session 1 Bot Building session 1" },
-      { name: "Session 2 Bot Building session 2" },
-      { name: "Session 3 Bot Building session 3" },
-      { name: "Session 4 Bot Building session 4" }
+      { name: "Orientation", link: "https://youtu.be/bQRRDlNTNBQ?si=LnHb8dG-3bl2OP22" },
+      { name: "Session 1", link: "https://youtu.be/xRZKRS9ffTY?si=VbcmSu6P-NFB373a" },
+      { name: "Session 2", link: "https://youtu.be/hrtOh5WgNo4?si=4BZ5e7BEn6w1LA2s" },
+      { name: "Session 3", link: "https://youtu.be/TBpOLI0Yd8g?si=vwS4Pd3nC_4JSpt1" },
+      { name: "Session 4", link: "https://youtu.be/t1QyfLQhxYI?si=oNszocWeqHSrpOt7" }
     ]
   },
   {
     id: 2,
     title: "Robotic Arm",
-    instructor: "Arunaya, Mentor Yantra",
+    instructor: "Arunya, Mentor Yantra",
     description: "An engaging session focused on understanding and building robotic arms, exploring concepts like servo control and joint movement.",
     category: "Robotic Arm",
     level: "intermediate",
-    image: "/images/placeholder.jpg",
+    image: "/images/robo-arm.png",
     sessions: [
-      { name: "robotic arm session", date: "26-1-2025" },
-      { name: "soldering session", date: "15 feb 2025" }
+      { name: "Robotic arm session", date: "26-1-2025", link: "https://youtu.be/gZNpzfyUTS4?si=YgrjBFdg0M1qjM6x" },
+      { name: "Soldering session", date: "15 feb 2025", link: "https://youtu.be/UVBREbFRtHE?si=tX8k2QtBcXvpXtJs" }
     ]
   },
   {
@@ -53,7 +53,7 @@ export const courses: Course[] = [
     description: "A series of immersive sessions exploring the mechanics, control systems, and real-time flight of drones.",
     category: "Drone",
     level: "advanced",
-    image: "/images/placeholder.jpg",
+    image: "/images/drone.png",
     sessions: [
       { name: "Drone Workshop 1", link: "https://www.youtube.com/watch?v=KB-Gds-XvfA" },
       { name: "Drone Workshop 2", link: "https://www.youtube.com/watch?v=l5yeXSbZA7k" },
@@ -71,7 +71,7 @@ export const courses: Course[] = [
     featured: true,
     image: "/images/kinematics.png",
     sessions: [
-      { name: "Robot Kinematics: DH Parameter" }
+      { name: "Robot Kinematics: DH Parameter", link: "https://youtu.be/b7BBMz7PSDo?si=728FASWhhRru9yp2" }
     ]
   },
   {
@@ -84,7 +84,7 @@ export const courses: Course[] = [
     featured: true,
     image: "/images/drone.png",
     sessions: [
-      { name: "Drone Technology Workshop held by YANTRA - The Robotics Club." }
+      { name: "Drone Technology Workshop held by YANTRA - The Robotics Club.", link: "https://youtu.be/xFwM8VU965g?si=svuByK5slKpXT6TK" }
     ]
   },
   {
@@ -96,9 +96,9 @@ export const courses: Course[] = [
     level: "beginner",
     image: "/images/placeholder.jpg",
     sessions: [
-      { name: "Day 1 Microcontroller Coding  3 Days Bootcamp  Day 1 1080p" },
-      { name: "Day 2 Microcontroller Coding  3 Days Bootcamp  Day 2 1080" },
-      { name: "Day 3 Microcontroller Coding  3 Days Bootcamp  Day 3 1080p" }
+      { name: "Day 1 Microcontroller Coding  3 Days Bootcamp  Day 1 1080p", link: "https://youtu.be/7eMNZYVsjzw?si=kNsDLEN5z6NUstpz" },
+      { name: "Day 2 Microcontroller Coding  3 Days Bootcamp  Day 2 1080", link: "https://youtu.be/Eti4lYY0JKg?si=h9bwfjgz933R2dUj" },
+      { name: "Day 3 Microcontroller Coding  3 Days Bootcamp  Day 3 1080p", link: "https://youtu.be/w5cSI-V50js?si=9gRI0_SqMX1eiRDq" }
     ]
   },
   {
@@ -111,7 +111,7 @@ export const courses: Course[] = [
     featured: true,
     image: "/images/ROS.png",
     sessions: [
-      { name: "Robot Operating System ROS! 🤖" }
+      { name: "Robot Operating System ROS! 🤖", link: "https://youtu.be/CHPRHZlvuVI?si=FukmkylQrnvEs-O8" }
     ]
   },
   {
@@ -123,7 +123,7 @@ export const courses: Course[] = [
     level: "intermediate",
     image: "/images/placeholder.jpg",
     sessions: [
-      { name: "IoT Session : Robo Rumble Cloud Connect" }
+      { name: "IoT Session : Robo Rumble Cloud Connect", link: "https://youtu.be/UMloaq6lqJc?si=3Ao5aASx89z9JxJN" }
     ]
   }
 ];
