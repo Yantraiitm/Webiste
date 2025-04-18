@@ -24,7 +24,7 @@ export const courses: Course[] = [
     description: "An introductory session to walk new members through the basics of robotics and what to expect in the Bot Building series.",
     category: "Bot",
     level: "beginner",
-    image: "/images/placeholder.jpg",
+    image: "/images/bot.png",
     sessions: [
       { name: "Orientation", link: "https://youtu.be/bQRRDlNTNBQ?si=LnHb8dG-3bl2OP22" },
       { name: "Session 1", link: "https://youtu.be/xRZKRS9ffTY?si=VbcmSu6P-NFB373a" },
@@ -40,7 +40,7 @@ export const courses: Course[] = [
     description: "An engaging session focused on understanding and building robotic arms, exploring concepts like servo control and joint movement.",
     category: "Robotic Arm",
     level: "intermediate",
-    image: "/images/robo-arm.png",
+    image: "/images/robo-arm-d.png",
     sessions: [
       { name: "Robotic arm session", date: "26-1-2025", link: "https://youtu.be/gZNpzfyUTS4?si=YgrjBFdg0M1qjM6x" },
       { name: "Soldering session", date: "15 feb 2025", link: "https://youtu.be/UVBREbFRtHE?si=tX8k2QtBcXvpXtJs" }
@@ -94,7 +94,7 @@ export const courses: Course[] = [
     description: "A beginner-friendly bootcamp where participants explored microcontroller programming and hardware interfacing over three intensive, hands-on days.",
     category: "Microcontroller",
     level: "beginner",
-    image: "/images/placeholder.jpg",
+    image: "/images/micro.png",
     sessions: [
       { name: "Day 1 Microcontroller Coding  3 Days Bootcamp  Day 1 1080p", link: "https://youtu.be/7eMNZYVsjzw?si=kNsDLEN5z6NUstpz" },
       { name: "Day 2 Microcontroller Coding  3 Days Bootcamp  Day 2 1080", link: "https://youtu.be/Eti4lYY0JKg?si=h9bwfjgz933R2dUj" },
@@ -121,7 +121,7 @@ export const courses: Course[] = [
     description: "An interactive session exploring how to connect and control robots through cloud-based IoT platforms, bridging software and hardware in smart ways.",
     category: "Bot",
     level: "intermediate",
-    image: "/images/placeholder.jpg",
+    image: "/images/bot.png",
     sessions: [
       { name: "IoT Session : Robo Rumble Cloud Connect", link: "https://youtu.be/UMloaq6lqJc?si=3Ao5aASx89z9JxJN" }
     ]
