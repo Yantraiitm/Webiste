@@ -16,6 +16,7 @@ const upcomingEvents = [
     location: "Main Campus",
     description: "Learn the fundamentals of robotics and build your own robot in this hands-on workshop.",
     category: "Workshop",
+    status: "Upcoming",
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ const upcomingEvents = [
     location: "Virtual",
     description: "Explore the intersection of artificial intelligence and robotics with industry experts.",
     category: "Seminar",
+    status: "Upcoming",
   },
   {
     id: 3,
@@ -32,6 +34,7 @@ const upcomingEvents = [
     location: "Engineering Building",
     description: "Showcase your robotics skills and compete for prizes in our annual competition.",
     category: "Competition",
+    status: "Upcoming",
   },
 ]
 
