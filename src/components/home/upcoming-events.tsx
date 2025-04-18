@@ -38,8 +38,8 @@ const upcomingEvents = [
 export default function UpcomingEvents() {
   return (
     <section className="py-20 relative">
-      <div className="absolute inset-0 z-0 opacity-10">
-        <Image src="/images/BACKGROUND-IMAGE.png" alt="Background" fill className="object-cover" />
+      <div className="absolute inset-0 z-0 opacity-60">
+        <Image src="/images/abstract.png" alt="Background" fill className="object-cover" />
       </div>
       <div className="container mx-auto px-4 relative z-10">
         <SectionHeading

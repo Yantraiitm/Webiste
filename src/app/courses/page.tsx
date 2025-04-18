@@ -140,9 +140,9 @@ export default function CoursesPage() {
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-16 relative">
-        <div className="absolute inset-0 z-0 opacity-20">
-          <Image src="/images/BACKGROUND-IMAGE.png" alt="Background" fill className="object-cover" />
-        </div>
+          <div className="absolute inset-0 z-0 opacity-60">
+                <Image src="/images/abstract.png" alt="Background" fill className="object-cover" />
+              </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
             className="text-center max-w-3xl mx-auto"
