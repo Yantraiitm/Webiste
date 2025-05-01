@@ -17,16 +17,13 @@ export default function OurMission() {
           >
             <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
             <p className="text-gray-300 mb-4">
-              At Yantra, our mission is to foster innovation in robotics and AI by creating a collaborative environment
-              where ideas can flourish and transform into reality.
+              At Yantra, our mission is to bridge the gap between theoretical knowledge and practical application in the field of robotics by fostering hands-on projects, active mentorship, and exposure to cutting-edge technologies.
             </p>
             <p className="text-gray-300 mb-4">
-              We aim to bridge the gap between theoretical knowledge and practical applications, equipping our members
-              with the skills and experience needed to excel in the rapidly evolving field of robotics.
+              We aim to cultivate an inclusive and dynamic environment where innovation thrives and students are empowered to transform their ideas into impactful, real-world solutions.
             </p>
             <p className="text-gray-300">
-              Through workshops, competitions, and research projects, we strive to push the boundaries of what's
-              possible and inspire the next generation of robotics engineers and enthusiasts.
+              Through collaboration, continuous learning, and interdisciplinary engagement, we strive to prepare our members to lead and contribute meaningfully to the rapidly evolving landscape of robotics and automation.
             </p>
           </motion.div>
           <motion.div
@@ -38,7 +35,7 @@ export default function OurMission() {
           >
             <div className="relative h-80 md:h-96 rounded-lg overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1538491247542-5da27794bc65?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="/images/about-us-robo.webp"
                 alt="Robotics Lab"
                 fill
                 className="object-cover"

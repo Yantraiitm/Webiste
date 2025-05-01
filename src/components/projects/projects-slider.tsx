@@ -3,57 +3,10 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
-// Featured project slider
-const featuredProjects = [
-  {
-    id: 1,
-    title: "SLIDE ONE",
-    description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam, soluta earum enim hic neque maxime.",
-    image: "/images/drone.png",
-    thumbnails: [
-      "https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-
-      "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-
-      "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
-  },
-  {
-    id: 2,
-    title: "SLIDE TWO",
-    description: "Advanced robotics platform with machine learning capabilities for adaptive responses.",
-    image: "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-     thumbnails: [
-      "https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      
-      "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-
-      "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
-  },
-  {
-    id: 3,
-    title: "SLIDE THREE",
-    description: "Innovative solution for sustainable energy management using IoT and smart sensors.",
-    image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    thumbnails: [
-        "/images/ROS.png",
-        
-        "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  
-        "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  
-        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-  },
-]
+import { featuredProjects, FeaturedProject } from "@/data/projects"
 
 export default function ProjectsSlider() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -67,61 +20,51 @@ export default function ProjectsSlider() {
   }
 
   return (
-    <section className="py-12 bg-black">
+    <section className="bg-black">
       <div className="container mx-auto px-4">
         <div className="relative rounded-xl overflow-hidden">
-          <div className="relative aspect-[16/9] w-full">
-            <Image
-              src={featuredProjects[currentSlide].image || "/placeholder.svg"}
-              alt={featuredProjects[currentSlide].title}
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex flex-col justify-center p-12">
+          <div className="relative h-[80vh] w-full">
+            {featuredProjects.length > 0 && (
+              <>
+                <Image
+                  src={featuredProjects[currentSlide].images[0] || "/placeholder.svg"}
+                  alt={featuredProjects[currentSlide].title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                {/* Purple overlay for the image */}
+                <div className="absolute inset-0 bg-purple-900/30 mix-blend-multiply"></div>
+              </>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-12">
               <motion.h2
                 key={`title-${currentSlide}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-4xl md:text-5xl font-bold mb-4"
+                className="text-5xl md:text-6xl font-bold mb-6 max-w-3xl"
               >
-                {featuredProjects[currentSlide].title}
+                {featuredProjects[currentSlide]?.title || "Featured Project"}
               </motion.h2>
-              <motion.p
-                key={`desc-${currentSlide}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-gray-300 max-w-md mb-6"
-              >
-                {featuredProjects[currentSlide].description}
-              </motion.p>
+              
               <motion.div
                 key={`button-${currentSlide}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mb-8"
               >
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">
-                  Show more
-                </Button>
+                <Link href={`/projects/${featuredProjects[currentSlide]?.id}`}>
+                  <Button 
+                    variant="outline" 
+                    className="border-white text-white hover:bg-white hover:text-black"
+                  >
+                    View Project
+                  </Button>
+                </Link>
               </motion.div>
             </div>
-          </div>
-
-          {/* Thumbnails */}
-          <div className="absolute bottom-4 right-4 flex gap-2">
-            {featuredProjects[currentSlide].thumbnails.map((thumb, index) => (
-              <div key={index} className="w-16 h-16 rounded-md overflow-hidden">
-                <Image
-                  src={thumb || "/placeholder.svg"}
-                  alt={`Thumbnail ${index + 1}`}
-                  width={64}
-                  height={64}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            ))}
           </div>
 
           {/* Navigation Arrows */}
@@ -137,6 +80,19 @@ export default function ProjectsSlider() {
           >
             <ChevronRight size={24} />
           </button>
+          
+          {/* Project indicators */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
+            {featuredProjects.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                  currentSlide === index ? "bg-white" : "bg-white/30"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

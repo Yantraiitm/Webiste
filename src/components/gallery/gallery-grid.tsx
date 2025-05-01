@@ -7,84 +7,54 @@ import { X } from "lucide-react"
 import GalleryFilters from "@/components/gallery/gallery-filters"
 import GalleryItem from "@/components/gallery/gallery-item"
 
-// Sample gallery data
+// Gallery data using local images from public/images/gallery
 const galleryItems = [
   {
     id: 1,
-    title: "Robot Competition 2024",
-    category: "Events",
-    image: "https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Club",
+    category: "Club",
+    image: "/images/gallery/Club.png",
   },
   {
     id: 2,
-    title: "AI Workshop",
+    title: "DH-Parameter Workshop",
     category: "Workshops",
-    image: "https://images.unsplash.com/photo-1538491247542-5da27794bc65?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/images/gallery/DH-Parameter(workshop).png",
   },
   {
     id: 3,
-    title: "Drone Project",
+    title: "Microcontroller",
     category: "Projects",
-    image: "https://images.unsplash.com/photo-1652757469159-6da922974228?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/images/gallery/Microcontroller .png",
   },
   {
     id: 4,
-    title: "Team Building Session",
-    category: "Events",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Microcontroller by Livin",
+    category: "Projects",
+    image: "/images/gallery/Microcontroller-by-livin .png",
   },
   {
     id: 5,
-    title: "Robotics Lab",
-    category: "Facilities",
-    image: "https://images.unsplash.com/photo-1606206873764-fd15e242df52?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Orientation Interaction",
+    category: "Events",
+    image: "/images/gallery/Orientation(Intraction).png",
   },
   {
     id: 6,
-    title: "Circuit Design Workshop",
+    title: "ROS Workshop",
     category: "Workshops",
-    image: "https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/images/gallery/ROS(workshop).png",
   },
   {
     id: 7,
-    title: "Autonomous Vehicle Project",
+    title: "Student Project",
     category: "Projects",
-    image: "https://images.unsplash.com/photo-1561144257-e32e8efc6c4f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 8,
-    title: "Annual Tech Fest",
-    category: "Events",
-    image: "https://images.unsplash.com/photo-1610461853808-0c0bf780a7c6?q=80&w=2093&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 9,
-    title: "Robotics Seminar",
-    category: "Workshops",
-    image: "https://images.unsplash.com/photo-1558008258-3256797b43f3?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 10,
-    title: "Smart Home Automation",
-    category: "Projects",
-    image: "https://images.unsplash.com/photo-1514803400321-3ca29fc47334?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 11,
-    title: "Hardware Lab",
-    category: "Facilities",
-    image: "https://images.unsplash.com/photo-1743056586194-837401d75e0a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 12,
-    title: "Coding Competition",
-    category: "Events",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/images/gallery/Student-Project(project).png",
   },
 ]
 
-// Categories for filtering
-const categories = ["All", "Events", "Workshops", "Projects", "Facilities"]
+// Categories for filtering based on available images
+const categories = ["All", "Club", "Events", "Workshops", "Projects"]
 
 export default function GalleryGrid() {
   const [selectedCategory, setSelectedCategory] = useState("All")

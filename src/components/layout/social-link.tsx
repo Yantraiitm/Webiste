@@ -10,7 +10,12 @@ interface SocialLinkProps {
 
 export default function SocialLink({ href, icon: Icon, label, hoverColor }: SocialLinkProps) {
   return (
-    <Link href={href} className={`transition-colors ${hoverColor}`}>
+    <Link 
+      href={href} 
+      className={`transition-colors ${hoverColor}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Icon size={24} />
       <span className="sr-only">{label}</span>
     </Link>

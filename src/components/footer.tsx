@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
+import { Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -28,19 +28,39 @@ export default function Footer() {
           </div>
 
           <div className="flex gap-6 mb-8">
-            <Link href="https://facebook.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
-              <Facebook size={24} />
-              <span className="sr-only">Facebook</span>
-            </Link>
-            <Link href="https://twitter.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
-              <Twitter size={24} />
-              <span className="sr-only">Twitter</span>
-            </Link>
-            <Link href="https://instagram.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
+            <Link 
+              href="https://instagram.com/yantra_iitm/" 
+              className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Instagram size={24} />
               <span className="sr-only">Instagram</span>
             </Link>
-            <Link href="https://linkedin.com" className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors">
+            <Link 
+              href="https://youtube.com/channel/UCC5zPvDOiRG_6M69WVgt8vw" 
+              className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Youtube size={24} />
+              <span className="sr-only">YouTube</span>
+            </Link>
+            <Link 
+              href="https://x.com/Yantra_IITM_BS" 
+              className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Twitter size={24} />
+              <span className="sr-only">Twitter (X)</span>
+            </Link>
+            <Link 
+              href="https://linkedin.com/company/yantra-iitm-bs-robotics-club/about/?viewAsMember=true" 
+              className="hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:bg-clip-text hover:text-transparent transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Linkedin size={24} />
               <span className="sr-only">LinkedIn</span>
             </Link>

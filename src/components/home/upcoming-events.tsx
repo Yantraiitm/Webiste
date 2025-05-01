@@ -6,37 +6,20 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import SectionHeading from "@/components/ui/section-heading"
 import EventCard from "@/components/events/event-card"
+import eventsData from "@/data/events.json"
 
-// Sample events data
-const upcomingEvents = [
-  {
-    id: 1,
-    title: "Robotics Workshop",
-    date: "April 15, 2025",
-    location: "Main Campus",
-    description: "Learn the fundamentals of robotics and build your own robot in this hands-on workshop.",
-    category: "Workshop",
-    status: "Upcoming",
-  },
-  {
-    id: 2,
-    title: "AI in Robotics Seminar",
-    date: "April 22, 2025",
-    location: "Virtual",
-    description: "Explore the intersection of artificial intelligence and robotics with industry experts.",
-    category: "Seminar",
-    status: "Upcoming",
-  },
-  {
-    id: 3,
-    title: "Robotics Competition",
-    date: "May 5, 2025",
-    location: "Engineering Building",
-    description: "Showcase your robotics skills and compete for prizes in our annual competition.",
-    category: "Competition",
-    status: "Upcoming",
-  },
-]
+// Get the 3 latest upcoming events
+const getUpcomingEvents = () => {
+  return eventsData.events
+    .filter(event => event.status === "upcoming")
+    .sort((a, b) => {
+      // Sort by date (convert to Date objects for proper comparison)
+      return new Date(a.date).getTime() - new Date(b.date).getTime()
+    })
+    .slice(0, 3)
+}
+
+const upcomingEvents = getUpcomingEvents()
 
 export default function UpcomingEvents() {
   return (
@@ -50,11 +33,17 @@ export default function UpcomingEvents() {
           description="Join us for workshops, competitions, and tech talks to enhance your robotics skills."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {upcomingEvents.map((event, index) => (
-            <EventCard key={event.id} event={event} index={index} />
-          ))}
-        </div>
+        {upcomingEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {upcomingEvents.map((event, index) => (
+              <EventCard key={event.id} event={event} index={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-10">
+            <p className="text-lg text-gray-600">No upcoming events at the moment. Check back soon!</p>
+          </div>
+        )}
 
         <motion.div
           className="flex justify-center mt-12"
