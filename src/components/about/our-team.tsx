@@ -47,11 +47,6 @@ const technicalTeam: TeamMember[] = [
     image: "/images/team/vivek.png",
   },
   {
-    name: "Siddhant",
-    role: "Contributor",
-    image: "/images/team/sid.png",
-  },
-  {
     name: "Abhinav",
     role: "Instructor",
     image: "/images/team/arvindhan.jpeg",
@@ -85,19 +80,9 @@ const technicalTeam: TeamMember[] = [
 
 const creativeTeam: TeamMember[] = [
   {
-    name: "Vardhini Kumar",
-    role: "Content Creator",
-    image: "/images/team/vardhani.png",
-  },
-  {
     name: "Ankush Mishra",
     role: "Content Creator",
     image: "/images/team/ank.png",
-  },
-  {
-    name: "Ishita Aggarwal",
-    role: "Public Relations",
-    image: "/images/team/isi.png",
   },
   {
     name: "Richa Verma",
@@ -108,11 +93,6 @@ const creativeTeam: TeamMember[] = [
     name: "Vipul",
     role: "Blogger",
     image: "/images/team/vipul.png",
-  },
-  {
-    name: "Shikha",
-    role: "Video Editor",
-    image: "/images/team/shik.png",
   },
   {
     name: "Nitish Chandra Gosh",
@@ -133,16 +113,6 @@ const creativeTeam: TeamMember[] = [
     name: "Sahil Chabra",
     role: "Web Developer",
     image: "/images/team/sahil.jpeg",
-  },
-  {
-    name: "Srivalli",
-    role: "Web Developer",
-    image: "/images/team/siva.png",
-  },
-  {
-    name: "Arvindhan",
-    role: "Web Developer",
-    image: "/images/team/arv.png",
   },
 ]
 
