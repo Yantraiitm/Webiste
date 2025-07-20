@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import NavLink from "@/components/layout/nav-link"
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
 
 const navLinks = [
   { name: "HOME", path: "/" },
@@ -58,11 +59,16 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden md:block">
-            <Link href="/login">
-              <Button variant="outline" className="border-gray-400 text-gray-400 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:text-white transition-colors duration-300">
-                Log In
-              </Button>
-            </Link>
+            <SignedOut>
+              <Link href="/login">
+                <Button variant="outline" className="border-gray-400 text-gray-400 hover:bg-gradient-to-r hover:from-[#883FE0] hover:to-[#FA8B8B] hover:text-white transition-colors duration-300">
+                  Log In
+                </Button>
+              </Link>
+            </SignedOut>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,11 +100,18 @@ export default function Navbar() {
                     {link.name}
                   </Link>
                 ))}
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full mt-2 border-white hover:bg-white hover:text-black">
-                    Log In
-                  </Button>
-                </Link>
+                <SignedOut>
+                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full mt-2 border-white hover:bg-white hover:text-black">
+                      Log In
+                    </Button>
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  <div className="pt-4">
+                    <UserButton afterSignOutUrl="/" />
+                  </div>
+                </SignedIn>
               </nav>
             </div>
           </motion.div>
