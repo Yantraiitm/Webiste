@@ -1,27 +1,31 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import SectionHeading from "@/components/ui/section-heading"
-import EventCard from "@/components/events/event-card"
-import eventsData from "@/data/events.json"
-
-// Get the 3 latest upcoming events
-const getUpcomingEvents = () => {
-  return eventsData.events
-    .filter(event => event.status === "upcoming")
-    .sort((a, b) => {
-      // Sort by date (convert to Date objects for proper comparison)
-      return new Date(a.date).getTime() - new Date(b.date).getTime()
-    })
-    .slice(0, 3)
-}
-
-const upcomingEvents = getUpcomingEvents()
+import EventCard, { Event } from "@/components/events/event-card"
+import { client } from "@/sanity/client"
 
 export default function UpcomingEvents() {
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchUpcomingEvents = async () => {
+      setIsLoading(true)
+      const query = `*[_type == "event" && status == "upcoming"]{
+        _id, title, description, date, location, image, category, status, slug
+      } | order(date asc)[0...3]`
+      const sanityEvents = await client.fetch<Event[]>(query)
+      setUpcomingEvents(sanityEvents)
+      setIsLoading(false)
+    }
+    fetchUpcomingEvents()
+  }, [])
+
   return (
     <section className="py-20 relative">
       <div className="absolute inset-0 z-0 opacity-60">
@@ -33,15 +37,19 @@ export default function UpcomingEvents() {
           description="Join us for workshops, competitions, and tech talks to enhance your robotics skills."
         />
 
-        {upcomingEvents.length > 0 ? (
+        {isLoading ? (
+          <div className="text-center py-10">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
+          </div>
+        ) : upcomingEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcomingEvents.map((event, index) => (
-              <EventCard key={event.id} event={event} index={index} />
+              <EventCard key={event._id} event={event} index={index} />
             ))}
           </div>
         ) : (
           <div className="text-center py-10">
-            <p className="text-lg text-gray-600">No upcoming events at the moment. Check back soon!</p>
+            <p className="text-lg text-gray-400">No upcoming events at the moment. Check back soon!</p>
           </div>
         )}
 

@@ -2,34 +2,52 @@
 
 import { useState, useEffect } from "react"
 import { useParams, notFound } from "next/navigation"
-import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, Clock, Calendar, PlayCircle, ExternalLink, ArrowLeft, BookOpen, CheckCircle, Star } from "lucide-react"
-import { courses, Course } from "@/data/courses"
+import { ChevronRight, Calendar, PlayCircle, ExternalLink, ArrowLeft, BookOpen, CheckCircle, Star } from "lucide-react"
+import { client } from "@/sanity/client"
+
+export interface Course {
+  _id: string;
+  title: string;
+  instructor: string;
+  description: string;
+  category: string;
+  level: string;
+  mainImage?: any;
+  sessions?: { name: string; date?: string; link?: string; _key: string; }[];
+  slug: { current: string; };
+}
 
 export default function CourseSessionsPage() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const [course, setCourse] = useState<Course | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedSessionIndex, setSelectedSessionIndex] = useState(0)
 
   useEffect(() => {
-    const courseId = Array.isArray(id) ? parseInt(id[0]) : parseInt(id as string)
-    const foundCourse = courses.find(c => c.id === courseId)
-    
-    if (foundCourse) {
-      setCourse(foundCourse)
-      setIsLoading(false)
-    } else {
-      notFound()
+    if (!slug) return
+
+    const fetchCourse = async () => {
+      setIsLoading(true)
+      const query = `*[_type == "course" && slug.current == $slug][0]`
+      const foundCourse = await client.fetch<Course>(query, { slug })
+      
+      if (foundCourse) {
+        setCourse(foundCourse)
+        setIsLoading(false)
+      } else {
+        notFound()
+      }
     }
-  }, [id])
+    
+    fetchCourse()
+  }, [slug])
 
   if (isLoading) {
     return (
-      <div className="w-full h-screen flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center bg-black">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     )
@@ -41,17 +59,11 @@ export default function CourseSessionsPage() {
     ? course.sessions[selectedSessionIndex] 
     : null
 
-  // Extract YouTube video ID from the link
   const getYoutubeId = (url: string | undefined) => {
     if (!url) return null
-    
-    // Handle various YouTube URL formats
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
     const match = url.match(regExp)
-    
-    return (match && match[2].length === 11)
-      ? match[2]
-      : null
+    return (match && match[2].length === 11) ? match[2] : null
   }
 
   const youtubeId = selectedSession?.link ? getYoutubeId(selectedSession.link) : null
@@ -64,7 +76,7 @@ export default function CourseSessionsPage() {
           <div className="flex items-center text-sm text-gray-400 mb-4">
             <Link href="/courses" className="hover:text-purple-500">Courses</Link>
             <ChevronRight size={14} className="mx-2" />
-            <Link href={`/courses/${id}`} className="hover:text-purple-500">{course.title}</Link>
+            <Link href={`/courses/${slug}`} className="hover:text-purple-500">{course.title}</Link>
             <ChevronRight size={14} className="mx-2" />
             <span className="text-white">Sessions</span>
           </div>
@@ -73,7 +85,7 @@ export default function CourseSessionsPage() {
               <h1 className="text-3xl font-bold">{course.title}</h1>
               <p className="text-gray-400 mt-2">Instructor: {course.instructor}</p>
             </div>
-            <Link href={`/courses/${id}`}>
+            <Link href={`/courses/${slug}`}>
               <Button variant="outline" className="flex items-center gap-2">
                 <ArrowLeft size={16} />
                 Back to Course
@@ -106,7 +118,7 @@ export default function CourseSessionsPage() {
                     <div className="aspect-video bg-gray-800 flex items-center justify-center">
                       <div className="text-center p-6">
                         <PlayCircle size={60} className="mx-auto text-gray-600 mb-4" />
-                        <p className="text-gray-400">Video content unavailable</p>
+                        <p className="text-gray-400">Video content unavailable for this session.</p>
                       </div>
                     </div>
                   )}
@@ -116,7 +128,7 @@ export default function CourseSessionsPage() {
                   {selectedSession?.date && (
                     <div className="flex items-center text-gray-400 mb-4">
                       <Calendar size={16} className="mr-2" />
-                      Session Date: {selectedSession.date}
+                      Session Date: {new Date(selectedSession.date).toLocaleDateString()}
                     </div>
                   )}
                   <div className="flex items-center gap-4 mb-6">
@@ -142,50 +154,6 @@ export default function CourseSessionsPage() {
                 <h2 className="text-2xl font-bold mb-4">About This Course</h2>
                 <div className="prose prose-invert max-w-none">
                   <p>{course.description}</p>
-                  <p className="mt-4">By the end of this course, you'll have a solid understanding of {course.category} and be able to apply these concepts in your own projects.</p>
-                </div>
-              </div>
-
-              {/* Session Content */}
-              <div className="bg-gray-900 rounded-lg overflow-hidden p-6 mb-8">
-                <h2 className="text-2xl font-bold mb-4">Session Content</h2>
-                <div className="prose prose-invert max-w-none">
-                  <p>In this session, you'll learn about the core concepts of {selectedSession?.name || course.title}. The instructor {course.instructor} will guide you through the theoretical foundations and practical applications.</p>
-                  
-                  <h3 className="text-xl font-bold mt-6 mb-3">What You'll Learn</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-start">
-                      <CheckCircle size={20} className="text-green-500 mr-2 mt-1 flex-shrink-0" />
-                      <span>Understand fundamental concepts of {course.category}</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle size={20} className="text-green-500 mr-2 mt-1 flex-shrink-0" />
-                      <span>Apply practical techniques in real-world scenarios</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle size={20} className="text-green-500 mr-2 mt-1 flex-shrink-0" />
-                      <span>Build your own projects using the skills learned</span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle size={20} className="text-green-500 mr-2 mt-1 flex-shrink-0" />
-                      <span>Troubleshoot common problems in {course.category} projects</span>
-                    </li>
-                  </ul>
-                  
-                  {selectedSession?.link && (
-                    <div className="mt-6">
-                      <h3 className="text-xl font-bold mb-3">Resources</h3>
-                      <a 
-                        href={selectedSession.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="flex items-center text-purple-500 hover:text-purple-400 transition-colors"
-                      >
-                        <ExternalLink size={16} className="mr-2" />
-                        Open original video in new tab
-                      </a>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -203,7 +171,7 @@ export default function CourseSessionsPage() {
                 <div className="max-h-[600px] overflow-y-auto">
                   {course.sessions && course.sessions.map((session, index) => (
                     <motion.button 
-                      key={index}
+                      key={session._key}
                       className={`w-full p-4 text-left border-b border-gray-800 transition flex items-start hover:bg-gray-800 ${
                         selectedSessionIndex === index ? 'bg-gray-800' : ''
                       }`}
@@ -224,41 +192,12 @@ export default function CourseSessionsPage() {
                         {session.date && (
                           <div className="text-sm text-gray-500 flex items-center mt-1">
                             <Calendar size={14} className="mr-1" />
-                            {session.date}
+                            {new Date(session.date).toLocaleDateString()}
                           </div>
                         )}
                       </div>
                     </motion.button>
                   ))}
-                </div>
-              </div>
-
-              {/* Course Info Card */}
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-6">
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-4">Course Details</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center">
-                      <CheckCircle size={20} className="text-green-500 mr-3" />
-                      <span>{course.sessions?.length || 0} video sessions</span>
-                    </div>
-                    <div className="flex items-center">
-                      <CheckCircle size={20} className="text-green-500 mr-3" />
-                      <span>{course.category} expertise</span>
-                    </div>
-                    <div className="flex items-center">
-                      <CheckCircle size={20} className="text-green-500 mr-3" />
-                      <span>Hands-on learning</span>
-                    </div>
-                    <div className="flex items-center">
-                      <CheckCircle size={20} className="text-green-500 mr-3" />
-                      <span>Available on all devices</span>
-                    </div>
-                    <div className="flex items-center">
-                      <CheckCircle size={20} className="text-green-500 mr-3" />
-                      <span>{course.level} level</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

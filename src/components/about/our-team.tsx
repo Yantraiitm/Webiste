@@ -3,120 +3,20 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
+import { AboutPageData } from "@/app/about/page"
+import { urlFor } from "@/sanity/client"
 
-// Define the team member interface
+// Updated interface to match Sanity data structure
 interface TeamMember {
-  name: string
-  role: string
-  image: string
+  _key: string;
+  name: string;
+  role: string;
+  image: any;
+  team: string;
 }
 
-// Team data grouped by roles
-const leadershipTeam: TeamMember[] = [
-  {
-    name: "Akhilesh Bhagat",
-    role: "Secretary",
-    image: "/images/team/head.png",
-  },
-  {
-    name: "Muskan Jadon",
-    role: "Deputy Secretary",
-    image: "/images/team/dep.png",
-  },
-]
-
-const technicalTeam: TeamMember[] = [
-  {
-    name: "Arunya",
-    role: "Instructor",
-    image: "/images/team/aru.png",
-  },
-  {
-    name: "Ayush Singh",
-    role: "Guest Contributor",
-    image: "/images/team/ayush.png",
-  },
-  {
-    name: "Finny",
-    role: "Mentor",
-    image: "/images/team/finny.png",
-  },
-  {
-    name: "Vivek",
-    role: "Instructor",
-    image: "/images/team/vivek.png",
-  },
-  {
-    name: "Abhinav",
-    role: "Instructor",
-    image: "/images/team/arvindhan.jpeg",
-  },
-  {
-    name: "Avinash",
-    role: "Contributor",
-    image: "/images/team/avinash.jpeg",
-  },
-  {
-    name: "Ritika",
-    role: "Contributor",
-    image: "/images/team/ritika.png",
-  },
-  {
-    name: "Soumya",
-    role: "Contributor",
-    image: "/images/team/soum.png",
-  },
-  {
-    name: "Yash Tiwari",
-    role: "Contributor",
-    image: "/images/team/yash.png",
-  },
-  {
-    name: "Kratika Jain",
-    role: "Contributor",
-    image: "/images/team/kra.png",
-  },
-]
-
-const creativeTeam: TeamMember[] = [
-  {
-    name: "Ankush Mishra",
-    role: "Content Creator",
-    image: "/images/team/ank.png",
-  },
-  {
-    name: "Richa Verma",
-    role: "Public Relations",
-    image: "/images/team/richa.png",
-  },
-  {
-    name: "Vipul",
-    role: "Blogger",
-    image: "/images/team/vipul.png",
-  },
-  {
-    name: "Nitish Chandra Gosh",
-    role: "Video Editor",
-    image: "/images/team/niti.png",
-  },
-  {
-    name: "Santosh Pasawan",
-    role: "Video Editor",
-    image: "/images/team/san.png",
-  },
-  {
-    name: "Yashneel Borana",
-    role: "Web Developer",
-    image: "/images/team/yashn.png",
-  },
-  {
-    name: "Sahil Chabra",
-    role: "Web Developer",
-    image: "/images/team/sahil.jpeg",
-  },
-]
-
 // Member card component for rendering individual team members
+// No styling changes here, only the image source is updated
 function MemberCard({ member, index, isLeadership = false }: { member: TeamMember; index: number; isLeadership?: boolean }) {
   return (
     <motion.div
@@ -129,7 +29,7 @@ function MemberCard({ member, index, isLeadership = false }: { member: TeamMembe
       <Card className="bg-gray-900/40 backdrop-blur-sm border border-gray-800 overflow-hidden group hover:border-[#883FE0]/50 transition-all duration-300">
         <div className={`relative w-full overflow-hidden ${isLeadership ? 'h-64 md:h-80' : 'h-56'}`}>
           <Image
-            src={member.image}
+            src={urlFor(member.image).url()}
             alt={member.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -155,7 +55,10 @@ function MemberCard({ member, index, isLeadership = false }: { member: TeamMembe
 }
 
 // Team section component
+// No styling changes here, only the key is updated for reliability
 function TeamSection({ title, members }: { title: string; members: TeamMember[] }) {
+  if (members.length === 0) return null;
+
   return (
     <section className="py-12">
       <div className="flex justify-center mb-8">
@@ -180,7 +83,7 @@ function TeamSection({ title, members }: { title: string; members: TeamMember[] 
       {title === "Leadership" ? (
         <div className="flex flex-col md:flex-row justify-center gap-10 mb-10">
           {members.map((member, index) => (
-            <div key={member.name} className="md:w-1/3 lg:w-1/4">
+            <div key={member._key} className="md:w-1/3 lg:w-1/4">
               <MemberCard member={member} index={index} isLeadership={true} />
             </div>
           ))}
@@ -188,7 +91,7 @@ function TeamSection({ title, members }: { title: string; members: TeamMember[] 
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
           {members.map((member, index) => (
-            <MemberCard key={member.name} member={member} index={index} />
+            <MemberCard key={member._key} member={member} index={index} />
           ))}
         </div>
       )}
@@ -197,7 +100,16 @@ function TeamSection({ title, members }: { title: string; members: TeamMember[] 
 }
 
 // Main team component
-export default function OurTeam() {
+// This now receives data as a prop and filters it
+export default function OurTeam({ data }: { data: AboutPageData }) {
+  if (!data.teamMembers || data.teamMembers.length === 0) {
+    return null;
+  }
+
+  const leadershipTeam = data.teamMembers.filter(m => m.team === 'Leadership');
+  const technicalTeam = data.teamMembers.filter(m => m.team === 'Technical Team');
+  const creativeTeam = data.teamMembers.filter(m => m.team === 'Creative Team');
+
   return (
     <section className="py-16 bg-black">
       <div className="container mx-auto px-4">

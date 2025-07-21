@@ -1,32 +1,33 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import SectionHeading from "@/components/ui/section-heading"
-import BlogCard from "@/components/blogs/blog-card"
-
-// Sample blogs data
-const latestBlogs = [
-  {
-    id: 1,
-    title: "The Future of Autonomous Robots",
-    excerpt: "Exploring the advancements in autonomous robotics and what the future holds for this technology.",
-    author: "Dr. Jane Smith",
-    date: "March 28, 2025",
-    image: "https://placehold.co/800x400/333/FFA500?text=Autonomous+Robots",
-  },
-  {
-    id: 2,
-    title: "Machine Learning in Robotics: A Practical Guide",
-    excerpt: "A comprehensive guide to implementing machine learning algorithms in robotics applications.",
-    author: "Prof. John Doe",
-    date: "March 20, 2025",
-    image: "https://placehold.co/800x400/333/FFA500?text=Machine+Learning",
-  },
-]
+import BlogCard, { Post } from "@/components/blogs/blog-card"
+import { client } from "@/sanity/client"
 
 export default function LatestBlogs() {
+  const [latestPosts, setLatestPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    const fetchLatestPosts = async () => {
+      const query = `*[_type == "post"]{
+        _id,
+        title,
+        "slug": slug.current,
+        excerpt,
+        mainImage,
+        publishedAt,
+        author->{name}
+      } | order(publishedAt desc)[0...2]`;
+      const posts = await client.fetch<Post[]>(query);
+      setLatestPosts(posts);
+    };
+    fetchLatestPosts();
+  }, []);
+
   return (
     <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
       <div className="container mx-auto px-4">
@@ -36,14 +37,10 @@ export default function LatestBlogs() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {latestBlogs.map((blog, index) => (
+          {latestPosts.map((post, index) => (
             <BlogCard
-              key={blog.id}
-              value={{
-                title: blog.title,
-                value: blog.id.toString(),
-                description: blog.excerpt,
-              }}
+              key={post._id}
+              post={post}
               index={index}
             />
           ))}

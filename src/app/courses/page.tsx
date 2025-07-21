@@ -1,25 +1,54 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Search, Star, Clock, Users, BookOpen } from "lucide-react"
+import { Search, Star, Clock, BookOpen } from "lucide-react"
+import { client } from "@/sanity/client"
+import imageUrlBuilder from '@sanity/image-url'
 
-import { courses, Course } from "@/data/courses"
+export interface Course {
+  _id: string;
+  title: string;
+  instructor: string;
+  description: string;
+  category: string;
+  level: string;
+  featured?: boolean;
+  mainImage?: any;
+  sessions?: { name: string; }[];
+  slug: { current: string; };
+}
 
-// Categories for filtering - derived from course data
-const categories = ["All", ...Array.from(new Set(courses.map(course => course.category)))]
+const builder = imageUrlBuilder(client)
+function urlFor(source: any) {
+  return builder.image(source)
+}
+
+const categories = ["All", "Bot", "Robotic Arm", "Drone", "Microcontroller", "ROS"]
 const levels = ["All Levels", "beginner", "intermediate", "advanced"]
 
 export default function CoursesPage() {
+  const [allCourses, setAllCourses] = useState<Course[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedLevel, setSelectedLevel] = useState("All Levels")
 
-  // Filter courses based on search query, category, and level
-  const filteredCourses = courses.filter((course) => {
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setIsLoading(true)
+      const query = `*[_type == "course"]{_id, title, slug, instructor, description, category, level, featured, mainImage, sessions}`
+      const sanityCourses = await client.fetch<Course[]>(query)
+      setAllCourses(sanityCourses)
+      setIsLoading(false)
+    }
+    fetchCourses()
+  }, [])
+
+  const filteredCourses = allCourses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -28,7 +57,15 @@ export default function CoursesPage() {
     return matchesSearch && matchesCategory && matchesLevel
   })
 
-  const featuredCourses = courses.filter((course) => course.featured)
+  const featuredCourses = allCourses.filter((course) => course.featured)
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -125,7 +162,7 @@ export default function CoursesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredCourses.map((course, index) => (
               <motion.div
-                key={course.id}
+                key={course._id}
                 className="bg-gray-900 rounded-lg overflow-hidden shadow-lg"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -133,10 +170,10 @@ export default function CoursesPage() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
               >
-                <Link href={`/courses/${course.id}`} className="block h-full">
+                <Link href={`/courses/${course.slug.current}`} className="block h-full">
                   <div className="relative h-48">
                     <Image 
-                      src={course.image || "/placeholder.svg"} 
+                      src={course.mainImage ? urlFor(course.mainImage).width(400).url() : "/placeholder.svg"} 
                       alt={course.title} 
                       fill 
                       className="object-cover" 
@@ -198,7 +235,7 @@ export default function CoursesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredCourses.map((course, index) => (
                 <motion.div
-                  key={course.id}
+                  key={course._id}
                   className="bg-black rounded-lg overflow-hidden shadow-lg"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -206,10 +243,10 @@ export default function CoursesPage() {
                   viewport={{ once: true }}
                   whileHover={{ y: -5 }}
                 >
-                  <Link href={`/courses/${course.id}`} className="block h-full">
+                  <Link href={`/courses/${course.slug.current}`} className="block h-full">
                     <div className="relative h-40">
                       <Image 
-                        src={course.image || "/placeholder.svg"} 
+                        src={course.mainImage ? urlFor(course.mainImage).width(400).url() : "/placeholder.svg"} 
                         alt={course.title} 
                         fill 
                         className="object-cover" 
