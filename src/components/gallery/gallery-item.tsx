@@ -2,15 +2,22 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { client } from "@/sanity/client"
+import imageUrlBuilder from '@sanity/image-url'
 
 interface GalleryItemProps {
   item: {
-    id: number
-    title: string
-    category: string
-    image: string
+    _id: string;
+    title: string;
+    category: string;
+    image: any;
   }
   onClick: () => void
+}
+
+const builder = imageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
 }
 
 export default function GalleryItem({ item, onClick }: GalleryItemProps) {
@@ -26,7 +33,7 @@ export default function GalleryItem({ item, onClick }: GalleryItemProps) {
     >
       <div className="aspect-square relative">
         <Image
-          src={item.image || "/placeholder.svg"}
+          src={item.image ? urlFor(item.image).url() : "/placeholder.svg"}
           alt={item.title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-110"

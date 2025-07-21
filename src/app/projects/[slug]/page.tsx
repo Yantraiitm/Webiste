@@ -1,32 +1,65 @@
+// filepath: e:\code\code\iitm\Webiste\src\app\projects\[slug]\page.tsx
 "use client";
 
-import { usePathname } from "next/navigation";
-import { projects } from "@/data/projects";
+import { useState, useEffect } from "react";
+import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { client } from "@/sanity/client";
+import imageUrlBuilder from '@sanity/image-url';
+
+export interface Project {
+  _id: string;
+  title: string;
+  author: string;
+  description: string;
+  images: any[];
+  category: string;
+  status: string;
+  slug: { current: string };
+}
+
+const builder = imageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
+}
 
 export default function ProjectPage() {
-  const pathname = usePathname();
-  const projectId = pathname.split("/").pop();
-  const project = projects.find((p) => p.id.toString() === projectId);
+  const { slug } = useParams();
+  const [project, setProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (!project) {
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchProject = async () => {
+      setIsLoading(true);
+      const query = `*[_type == "project" && slug.current == $slug][0]`;
+      const sanityProject = await client.fetch<Project>(query, { slug });
+
+      if (sanityProject) {
+        setProject(sanityProject);
+      } else {
+        notFound();
+      }
+      setIsLoading(false);
+    };
+
+    fetchProject();
+  }, [slug]);
+
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center text-center p-4">
-        <h1 className="text-3xl font-bold mb-4">Project not found</h1>
-        <p className="text-gray-300 mb-8">
-          The project you're looking for doesn't exist or has been removed.
-        </p>
-        <Link
-          href="/projects"
-          className="flex items-center text-[#883FE0] hover:text-[#FA8B8B] transition-colors"
-        >
-          <ChevronLeft size={20} /> Back to Projects
-        </Link>
+      <div className="w-full h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     );
+  }
+
+  if (!project) {
+    return notFound();
   }
 
   return (
@@ -69,7 +102,7 @@ export default function ProjectPage() {
           className="relative aspect-video w-full rounded-xl overflow-hidden mb-12"
         >
           <Image
-            src={project.images[0] || "/placeholder.svg"}
+            src={project.images[0] ? urlFor(project.images[0]).url() : "/placeholder.svg"}
             alt={project.title}
             fill
             className="object-cover"
@@ -101,11 +134,11 @@ export default function ProjectPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {project.images.map((image, index) => (
               <div
-                key={index}
+                key={(image._key as string) || index}
                 className="aspect-square relative rounded-xl overflow-hidden hover:shadow-lg hover:shadow-[#883FE0]/20 transition-all"
               >
                 <Image
-                  src={image}
+                  src={urlFor(image).url()}
                   alt={`${project.title} - Image ${index + 1}`}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-500"

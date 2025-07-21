@@ -3,8 +3,9 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { HomePageData } from "@/app/page"
 
-export default function JoinCTA() {
+export default function JoinCTA({ data }: { data: HomePageData | null }) {
   return (
     <section className="py-20 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white relative overflow-hidden">
       {/* Background decorative elements */}
@@ -20,10 +21,12 @@ export default function JoinCTA() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to join the future of robotics?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {data?.ctaTitle || "Ready to join the future of robotics?"}
+            </h2>
             <p className="text-white/80 max-w-2xl">
-              Become a member of Yantra Robotics Club and get access to workshops, events, resources, and a community of
-              like-minded innovators.
+              {data?.ctaDescription ||
+                "Become a member of Yantra Robotics Club and get access to workshops, events, resources, and a community of like-minded innovators."}
             </p>
           </motion.div>
           <motion.div
@@ -32,9 +35,9 @@ export default function JoinCTA() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Link href="/join">
+            <Link href="/login">
               <Button className="bg-white hover:bg-gray-100 hover:from-[#7F35CF] hover:to-[#F87878] hover:text-white bg-gradient-to-r from-white to-white bg-clip-text text-transparent px-8 py-6 text-lg font-bold">
-                Join Yantra Today
+                {data?.ctaButtonText || "Join Yantra Today"}
               </Button>
             </Link>
           </motion.div>

@@ -1,103 +1,76 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
+import { client } from "@/sanity/client"
+import imageUrlBuilder from '@sanity/image-url'
 
-// Sample blogs data
-const blogs = [
-  {
-    id: 1,
-    title: "The Future of Autonomous Robots",
-    excerpt: "Exploring the advancements in autonomous robotics and what the future holds for this technology.",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-    author: "Dr. Jane Smith",
-    date: "March 28, 2025",
-    image: "https://images.unsplash.com/photo-1581092333203-42374bcf7d89?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Technology",
-    tags: ["Robotics", "AI", "Automation"],
-  },
-  {
-    id: 2,
-    title: "Machine Learning in Robotics: A Practical Guide",
-    excerpt: "A comprehensive guide to implementing machine learning algorithms in robotics applications.",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-    author: "Prof. John Doe",
-    date: "March 20, 2025",
-    image: "https://images.unsplash.com/photo-1612914039075-943af2485b59?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Education",
-    tags: ["Machine Learning", "Robotics", "Programming"],
-  },
-  {
-    id: 3,
-    title: "Ethical Considerations in AI-Powered Robotics",
-    excerpt: "Discussing the ethical implications and considerations when developing AI-powered robots.",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-    author: "Dr. Emily Chen",
-    date: "March 15, 2025",
-    image: "https://images.unsplash.com/photo-1612914039075-943af2485b59?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Ethics",
-    tags: ["AI Ethics", "Robotics", "Philosophy"],
-  },
-  {
-    id: 4,
-    title: "Building Your First Robot: A Beginner's Guide",
-    excerpt: "Step-by-step instructions for beginners looking to build their first robot from scratch.",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-    author: "Michael Johnson",
-    date: "March 10, 2025",
-    image: "https://images.unsplash.com/photo-1612914039075-943af2485b59?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Tutorial",
-    tags: ["DIY", "Robotics", "Beginner"],
-  },
-  {
-    id: 5,
-    title: "The Role of Robotics in Modern Healthcare",
-    excerpt: "Examining how robotics is transforming healthcare delivery and patient outcomes.",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-    author: "Dr. Sarah Williams",
-    date: "March 5, 2025",
-    image: "https://images.unsplash.com/photo-1612914039075-943af2485b59?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Healthcare",
-    tags: ["Medical Robotics", "Healthcare", "Innovation"],
-  },
-  {
-    id: 6,
-    title: "Robotics Competitions: Why They Matter",
-    excerpt: "The importance of robotics competitions in fostering innovation and skill development.",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel ultricies lacinia, nisl nisl aliquam nisl, eu aliquam nisl nisl sit amet nisl.",
-    author: "Alex Thompson",
-    date: "February 28, 2025",
-    image: "https://images.unsplash.com/photo-1612914039075-943af2485b59?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    category: "Education",
-    tags: ["Competitions", "Robotics", "STEM Education"],
-  },
-]
+export interface Post {
+  _id: string;
+  title: string;
+  excerpt: string;
+  mainImage: any;
+  slug: { current: string };
+  author: { name: string };
+  publishedAt: string;
+  category: { title: string };
+}
 
-// Categories for filtering
-const categories = ["All", "Technology", "Education", "Ethics", "Tutorial", "Healthcare"]
+const builder = imageUrlBuilder(client)
+function urlFor(source: any) {
+  return builder.image(source)
+}
+
+const staticCategories = ["All", "Technology", "Education", "Ethics", "Tutorial", "Healthcare"]
 
 export default function BlogsPage() {
+  const [allPosts, setAllPosts] = useState<Post[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
 
-  // Filter blogs based on search query and category
-  const filteredBlogs = blogs.filter((blog) => {
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true)
+      const query = `*[_type == "post"]{
+        _id,
+        title,
+        excerpt,
+        mainImage,
+        slug,
+        "author": author->{name},
+        publishedAt,
+        "category": categories[0]->{title}
+      } | order(publishedAt desc)`
+      const sanityPosts = await client.fetch<Post[]>(query)
+      setAllPosts(sanityPosts)
+      setIsLoading(false)
+    }
+    fetchPosts()
+  }, [])
+
+  const filteredBlogs = allPosts.filter((blog) => {
     const matchesSearch =
       blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === "All" || blog.category === selectedCategory
+      (blog.excerpt && blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase()))
+    const matchesCategory = selectedCategory === "All" || (blog.category && blog.category.title === selectedCategory)
     return matchesSearch && matchesCategory
   })
+
+  const featuredPost = filteredBlogs.length > 0 ? filteredBlogs[0] : null
+  const otherPosts = filteredBlogs.length > 1 ? filteredBlogs.slice(1) : []
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      </div>
+    )
+  }
 
   return (
     <div >
@@ -139,7 +112,7 @@ export default function BlogsPage() {
 
             {/* Category Filters */}
             <div className="flex flex-wrap justify-center gap-2">
-              {categories.map((category) => (
+              {staticCategories.map((category) => (
                 <motion.button
                   key={category}
                   className={`px-4 py-1 rounded-full text-xs font-medium transition-colors ${
@@ -160,46 +133,47 @@ export default function BlogsPage() {
       </section>
 
       {/* Featured Blog */}
-      <section className="py-12 bg-black">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative h-80 lg:h-96 rounded-lg overflow-hidden">
-              <Image src={blogs[0].image || "/placeholder.svg"} alt={blogs[0].title} fill className="object-cover" />
-            </div>
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-sm text-gray-400">
-                <span>{blogs[0].date}</span>
-                <span>•</span>
-                <span>{blogs[0].category}</span>
+      {featuredPost && (
+        <section className="py-12 bg-black">
+          <div className="container mx-auto px-4">
+            <motion.div
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="relative h-80 lg:h-96 rounded-lg overflow-hidden">
+                <Image src={featuredPost.mainImage ? urlFor(featuredPost.mainImage).url() : "/placeholder.svg"} alt={featuredPost.title} fill className="object-cover" />
               </div>
-              <h2 className="text-3xl font-bold">{blogs[0].title}</h2>
-              <p className="text-gray-300">{blogs[0].excerpt}</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-700"></div>
-                <span className="text-sm font-medium">{blogs[0].author}</span>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <span>{new Date(featuredPost.publishedAt).toLocaleDateString()}</span>
+                  {featuredPost.category && <><span>•</span><span>{featuredPost.category.title}</span></>}
+                </div>
+                <h2 className="text-3xl font-bold">{featuredPost.title}</h2>
+                <p className="text-gray-300">{featuredPost.excerpt}</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-700"></div>
+                  <span className="text-sm font-medium">{featuredPost.author?.name || 'Yantra Team'}</span>
+                </div>
+                <Link href={`/blogs/${featuredPost.slug.current}`}>
+                  <Button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white">Read Article</Button>
+                </Link>
               </div>
-              <Link href={`/blogs/${blogs[0].id}`}>
-                <Button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white">Read Article</Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Blog Grid */}
       <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-4">
-          {filteredBlogs.length > 0 ? (
+          {otherPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredBlogs.slice(1).map((blog, index) => (
+              {otherPosts.map((blog, index) => (
                 <motion.div
-                  key={blog.id}
+                  key={blog._id}
                   className="bg-black rounded-lg overflow-hidden shadow-lg"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -208,20 +182,22 @@ export default function BlogsPage() {
                   whileHover={{ y: -10 }}
                 >
                   <div className="relative h-48">
-                    <Image src={blog.image || "/placeholder.svg"} alt={blog.title} fill className="object-cover" />
-                    <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      {blog.category}
-                    </div>
+                    <Image src={blog.mainImage ? urlFor(blog.mainImage).url() : "/placeholder.svg"} alt={blog.title} fill className="object-cover" />
+                    {blog.category && (
+                      <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        {blog.category.title}
+                      </div>
+                    )}
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                      <span>{blog.date}</span>
+                      <span>{new Date(blog.publishedAt).toLocaleDateString()}</span>
                       <span>•</span>
-                      <span>By {blog.author}</span>
+                      <span>By {blog.author?.name || 'Yantra Team'}</span>
                     </div>
                     <h3 className="text-xl font-bold mb-2">{blog.title}</h3>
-                    <p className="text-gray-400 mb-4">{blog.excerpt}</p>
-                    <Link href={`/blogs/${blog.id}`}>
+                    <p className="text-gray-400 mb-4 line-clamp-3">{blog.excerpt}</p>
+                    <Link href={`/blogs/${blog.slug.current}`}>
                       <Button variant="link" className="text-orange-500 p-0 hover:text-orange-400">
                         Read More →
                       </Button>
@@ -231,10 +207,12 @@ export default function BlogsPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <h3 className="text-xl font-medium mb-2">No articles found</h3>
-              <p className="text-gray-400">Try adjusting your search or filter criteria</p>
-            </div>
+            !featuredPost && (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium mb-2">No articles found</h3>
+                <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+              </div>
+            )
           )}
         </div>
       </section>

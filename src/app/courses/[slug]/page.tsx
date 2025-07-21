@@ -6,30 +6,62 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, Clock, Star, Users, CheckCircle, PlayCircle, Calendar, BookOpen } from "lucide-react"
-import { courses, Course } from "@/data/courses"
+import { ChevronRight, Clock, Star, CheckCircle, PlayCircle, BookOpen } from "lucide-react"
+import { client } from "@/sanity/client"
+import imageUrlBuilder from '@sanity/image-url'
+
+export interface Course {
+  _id: string;
+  title: string;
+  instructor: string;
+  description: string;
+  category: string;
+  level: string;
+  mainImage?: any;
+  sessions?: { name: string; date?: string; link?: string; }[];
+  slug: { current: string; };
+}
+
+const builder = imageUrlBuilder(client)
+function urlFor(source: any) {
+  return builder.image(source)
+}
 
 export default function CourseDetailPage() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const router = useRouter()
   const [course, setCourse] = useState<Course | null>(null)
+  const [relatedCourses, setRelatedCourses] = useState<Course[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const courseId = Array.isArray(id) ? parseInt(id[0]) : parseInt(id as string)
-    const foundCourse = courses.find(c => c.id === courseId)
-    
-    if (foundCourse) {
-      setCourse(foundCourse)
+    if (!slug) return
+
+    const fetchCourseData = async () => {
+      setIsLoading(true)
+      const courseQuery = `*[_type == "course" && slug.current == $slug][0]`
+      const courseData = await client.fetch<Course>(courseQuery, { slug })
+
+      if (courseData) {
+        setCourse(courseData)
+        const relatedQuery = `*[_type == "course" && category == $category && slug.current != $slug][0...3]`
+        const relatedData = await client.fetch<Course[]>(relatedQuery, { 
+          category: courseData.category,
+          slug: courseData.slug.current
+        })
+        setRelatedCourses(relatedData)
+      } else {
+        notFound()
+      }
       setIsLoading(false)
-    } else {
-      notFound()
     }
-  }, [id])
+
+    fetchCourseData()
+  }, [slug])
 
   if (isLoading) {
     return (
-      <div className="w-full h-screen flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center bg-black">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     )
@@ -38,7 +70,7 @@ export default function CourseDetailPage() {
   if (!course) return notFound()
 
   const handleEnroll = () => {
-    router.push(`/courses/${id}/sessions`)
+    router.push(`/courses/${course.slug.current}/sessions`)
   }
 
   return (
@@ -81,7 +113,7 @@ export default function CourseDetailPage() {
               <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl">
                 <div className="relative h-48">
                   <Image 
-                    src={course.image || "/placeholder.svg"} 
+                    src={course.mainImage ? urlFor(course.mainImage).url() : "/placeholder.svg"} 
                     alt={course.title} 
                     fill 
                     className="object-cover" 
@@ -142,18 +174,15 @@ export default function CourseDetailPage() {
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8">Similar Courses</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {courses
-              .filter(c => c.category === course.category && c.id !== course.id)
-              .slice(0, 3)
-              .map((relatedCourse) => (
-                <Link href={`/courses/${relatedCourse.id}`} key={relatedCourse.id}>
+            {relatedCourses.map((relatedCourse) => (
+                <Link href={`/courses/${relatedCourse.slug.current}`} key={relatedCourse._id}>
                   <motion.div 
                     className="bg-black rounded-lg overflow-hidden shadow-lg"
                     whileHover={{ y: -5 }}
                   >
                     <div className="relative h-40">
                       <Image 
-                        src={relatedCourse.image || "/placeholder.svg"} 
+                        src={relatedCourse.mainImage ? urlFor(relatedCourse.mainImage).url() : "/placeholder.svg"} 
                         alt={relatedCourse.title} 
                         fill 
                         className="object-cover" 

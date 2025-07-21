@@ -1,22 +1,68 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { featuredProjects, FeaturedProject } from "@/data/projects"
+import { client } from "@/sanity/client"
+import imageUrlBuilder from '@sanity/image-url'
+
+export interface Project {
+  _id: string;
+  title: string;
+  images: any[];
+  slug: { current: string };
+}
+
+const builder = imageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
+}
 
 export default function ProjectsSlider() {
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const fetchFeaturedProjects = async () => {
+      setIsLoading(true);
+      const query = `*[_type == "project" && featured == true]{_id, title, images, slug}[0...5]`;
+      const sanityProjects = await client.fetch<Project[]>(query);
+      setFeaturedProjects(sanityProjects);
+      setIsLoading(false);
+    };
+    fetchFeaturedProjects();
+  }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === featuredProjects.length - 1 ? 0 : prev + 1))
-  }
+    if (featuredProjects.length === 0) return;
+    setCurrentSlide((prev) => (prev === featuredProjects.length - 1 ? 0 : prev + 1));
+  };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? featuredProjects.length - 1 : prev - 1))
+    if (featuredProjects.length === 0) return;
+    setCurrentSlide((prev) => (prev === 0 ? featuredProjects.length - 1 : prev - 1));
+  };
+
+  if (isLoading) {
+    return (
+      <section className="bg-black">
+        <div className="container mx-auto px-4">
+          <div className="relative rounded-xl overflow-hidden">
+            <div className="relative h-[80vh] w-full bg-gray-900 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-500"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (featuredProjects.length === 0) {
+    return null; // Don't render the slider if there are no featured projects
   }
 
   return (
@@ -27,7 +73,7 @@ export default function ProjectsSlider() {
             {featuredProjects.length > 0 && (
               <>
                 <Image
-                  src={featuredProjects[currentSlide].images[0] || "/placeholder.svg"}
+                  src={urlFor(featuredProjects[currentSlide].images[0]).url()}
                   alt={featuredProjects[currentSlide].title}
                   fill
                   className="object-cover"
@@ -55,7 +101,7 @@ export default function ProjectsSlider() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="mb-8"
               >
-                <Link href={`/projects/${featuredProjects[currentSlide]?.id}`}>
+                <Link href={`/projects/${featuredProjects[currentSlide]?.slug.current}`}>
                   <Button 
                     variant="outline" 
                     className="border-white text-white hover:bg-white hover:text-black"

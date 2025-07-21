@@ -1,49 +1,67 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useParams, notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, MapPin, ArrowLeft } from "lucide-react"
-import eventsData from "@/data/events.json"
+import { client } from "@/sanity/client"
+import imageUrlBuilder from '@sanity/image-url'
+import { PortableText } from '@portabletext/react'
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
-  const [event, setEvent] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  image?: any;
+  category: string;
+  status: 'past' | 'ongoing' | 'upcoming';
+  slug: { current: string };
+  body?: any[];
+}
+
+const builder = imageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
+}
+
+export default function EventDetailPage() {
+  const { slug } = useParams();
+  const [event, setEvent] = useState<Event | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Find the event with the matching ID
-    const eventId = parseInt(params.id)
-    const foundEvent = eventsData.events.find(e => e.id === eventId)
+    if (!slug) return;
     
-    if (foundEvent) {
-      setEvent(foundEvent)
+    const fetchEvent = async () => {
+      setIsLoading(true);
+      const query = `*[_type == "event" && slug.current == $slug][0]`;
+      const foundEvent = await client.fetch<Event>(query, { slug });
+      
+      if (foundEvent) {
+        setEvent(foundEvent);
+      } else {
+        notFound();
+      }
+      
+      setIsLoading(false);
     }
-    
-    setLoading(false)
-  }, [params.id])
+    fetchEvent();
+  }, [slug])
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     )
   }
 
   if (!event) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
-        <h1 className="text-3xl font-bold mb-4">Event Not Found</h1>
-        <p className="text-gray-400 mb-8">The event you're looking for doesn't exist or has been removed.</p>
-        <Link href="/events">
-          <Button>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Events
-          </Button>
-        </Link>
-      </div>
-    )
+    return notFound();
   }
 
   const getStatusColor = (status: string) => {
@@ -72,12 +90,16 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
     }
   };
 
+  const eventDate = new Date(event.date);
+  const formattedDate = eventDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const formattedTime = eventDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section with Event Image */}
       <div className="relative h-96">
         <Image 
-          src={event.image || "/images/abstract.png"} 
+          src={event.image ? urlFor(event.image).url() : "/images/abstract.png"} 
           alt={event.title} 
           fill 
           className="object-cover opacity-70"
@@ -145,7 +167,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
           
           {/* Event Information Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-900 rounded-lg p-6">
+            <div className="bg-gray-900 rounded-lg p-6 sticky top-24">
               <h3 className="text-xl font-bold mb-6">Event Information</h3>
               
               <div className="space-y-4">
@@ -153,7 +175,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                   <Calendar className="mt-1 mr-3 text-[#883FE0]" />
                   <div>
                     <p className="font-medium">Date</p>
-                    <p className="text-gray-400">{event.date}</p>
+                    <p className="text-gray-400">{formattedDate}</p>
                   </div>
                 </div>
                 
@@ -161,7 +183,7 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                   <Clock className="mt-1 mr-3 text-[#883FE0]" />
                   <div>
                     <p className="font-medium">Time</p>
-                    <p className="text-gray-400">{event.time}</p>
+                    <p className="text-gray-400">{formattedTime}</p>
                   </div>
                 </div>
                 

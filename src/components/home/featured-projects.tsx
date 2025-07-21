@@ -1,14 +1,26 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import SectionHeading from "@/components/ui/section-heading"
-import { getFeaturedCourses, Course } from "@/data/courses"
+import { client, urlFor } from "@/sanity/client"
 
-// Course card component
-const CourseCard = ({ course, index }: { course: Course; index: number }) => {
+// Project interface from Sanity
+export interface Project {
+  _id: string;
+  title: string;
+  author: string;
+  description: string;
+  images: any[];
+  category: string;
+  slug: { current: string };
+}
+
+// Project card component
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   return (
     <motion.div
       className="bg-gray-900/60 rounded-xl overflow-hidden backdrop-blur-sm border border-gray-800 hover:border-[#883FE0]/50 transition duration-500 h-full flex flex-col"
@@ -24,27 +36,24 @@ const CourseCard = ({ course, index }: { course: Course; index: number }) => {
     >
       <div className="relative h-48 w-full">
         <Image
-          src={course.image || "/images/ROBOTBG1.png"}
-          alt={course.title}
+          src={project.images?.[0] ? urlFor(project.images[0]).url() : "/images/ROBOTBG1.png"}
+          alt={project.title}
           fill
           className="object-cover"
         />
         <div className="absolute top-2 right-2 bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white text-xs px-2 py-1 rounded-full">
-          {course.level}
-        </div>
-        <div className="absolute top-2 left-2 bg-gray-900 text-white text-xs px-2 py-1 rounded-full">
-          {course.category}
+          {project.category}
         </div>
       </div>
       
       <div className="p-6 flex-grow flex flex-col">
-        <h3 className="text-xl font-bold text-white mb-2">{course.title}</h3>
-        <p className="text-sm text-gray-400 mb-2">Instructor: {course.instructor}</p>
-        <p className="text-sm text-gray-300 mb-4 flex-grow">{course.description}</p>
+        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+        <p className="text-sm text-gray-400 mb-2">By: {project.author}</p>
+        <p className="text-sm text-gray-300 mb-4 flex-grow line-clamp-3">{project.description}</p>
         
         <div className="mt-auto">
-          <Link href={`/courses/${course.id}`} className="text-transparent bg-clip-text bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] hover:from-[#7F35CF] hover:to-[#F87878] text-sm flex items-center">
-            View course details
+          <Link href={`/projects/${project.slug.current}`} className="text-transparent bg-clip-text bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] hover:from-[#7F35CF] hover:to-[#F87878] text-sm flex items-center">
+            View project details
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -56,7 +65,18 @@ const CourseCard = ({ course, index }: { course: Course; index: number }) => {
 }
 
 export default function FeaturedProjects() {
-  const featuredCourses = getFeaturedCourses();
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const fetchFeaturedProjects = async () => {
+      const query = `*[_type == "project" && featured == true]{
+        _id, title, author, description, images, category, slug
+      } | order(_createdAt desc)[0...3]`;
+      const projects = await client.fetch<Project[]>(query);
+      setFeaturedProjects(projects);
+    };
+    fetchFeaturedProjects();
+  }, []);
   
   return (
     <section className="py-20 bg-gradient-to-b from-black to-black-900 relative overflow-hidden">
@@ -66,13 +86,13 @@ export default function FeaturedProjects() {
 
       <div className="container mx-auto px-4">
         <SectionHeading
-          title="Featured Courses"
-          description="Explore our cutting-edge robotics courses taught by industry experts and academic mentors."
+          title="Featured Projects"
+          description="Explore our innovative robotics projects created by club members."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredCourses.map((course, index) => (
-            <CourseCard key={course.id} course={course} index={index} />
+          {featuredProjects.map((project, index) => (
+            <ProjectCard key={project._id} project={project} index={index} />
           ))}
         </div>
 
@@ -83,12 +103,12 @@ export default function FeaturedProjects() {
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <Link href="/courses">
+          <Link href="/projects">
             <Button
               variant="outline"
               className="border-transparent bg-gradient-to-r from-[#883FE0] to-[#FA8B8B] text-white hover:from-[#7F35CF] hover:to-[#F87878] px-8"
             >
-              View All Courses
+              View All Projects
             </Button>
           </Link>
         </motion.div>
